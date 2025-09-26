@@ -1,0 +1,1680 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CyberTune - Ultimate Music Streaming</title>
+    <link rel="icon" type="image/x-icon" href="image/favicon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'cyber-purple': '#7c3aed',
+                        'cyber-blue': '#3b82f6',
+                        'cyber-green': '#22c55e',
+                        'cyber-red': '#ef4444',
+                        'dark-bg': '#111827',
+                        'dark-card': '#1f2937',
+                        'player-bg': '#030712'
+                    },
+                    animation: {
+                        'cyber-glow': 'cyber-glow 1.2s ease-in-out infinite alternate',
+                        'pulse-cyber': 'pulse-cyber 1.6s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'spin-medium': 'spin 12s linear infinite',
+                        'fade-in': 'fade-in 0.3s ease-out',
+                        'fade-out': 'fade-out 0.3s ease-in',
+                        'equalizer': 'equalizer 0.7s ease-in-out infinite alternate',
+                        'music-beat': 'music-beat 1.2s ease-in-out infinite'
+                    },
+                    keyframes: {
+                        'cyber-glow': {
+                            '0%': { boxShadow: '0 0 10px #7c3aed, 0 0 20px #3b82f6, 0 0 30px #22c55e' },
+                            '100%': { boxShadow: '0 0 15px #7c3aed, 0 0 30px #3b82f6, 0 0 45px #22c55e' }
+                        },
+                        'pulse-cyber': {
+                            '0%, 100%': { boxShadow: '0 0 10px currentColor' },
+                            '50%': { boxShadow: '0 0 40px currentColor' }
+                        },
+                        'fade-in': {
+                            '0%': { opacity: '0', transform: 'scale(0.97)' },
+                            '100%': { opacity: '1', transform: 'scale(1)' }
+                        },
+                        'fade-out': {
+                            '0%': { opacity: '1', transform: 'scale(1)' },
+                            '100%': { opacity: '0', transform: 'scale(0.97)' }
+                        },
+                        equalizer: {
+                            '0%': { transform: 'scaleY(0.4)' },
+                            '100%': { transform: 'scaleY(1.2)' }
+                        },
+                        'music-beat': {
+                            '0%, 100%': { transform: 'scale(1) rotate(0deg)' },
+                            '50%': { transform: 'scale(1.2) rotate(10deg)' }
+                        }
+                    },
+                    screens: {
+                        'xs': '360px',
+                        'sm': '640px',
+                        'md': '768px',
+                        'lg': '1024px',
+                        'xl': '1280px',
+                        '2xl': '1536px'
+                    }
+                }
+            }
+        }
+    </script>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body class="flex flex-col min-h-screen dark">
+    <!-- Header -->
+    <header class="head py-2 px-3">
+        <div class="container mx-auto flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+                <div
+                    class="w-8 h-8 bg-gradient-to-r from-cyber-purple to-cyber-blue rounded-full flex items-center justify-center cyber-glow">
+                    <i class="fas fa-headphones text-white text-sm"></i>
+                </div>
+                <a href="" style="text-decoration: none;">
+                    <h1 class="text-xl font-bold gradient-text">Cyber<span class="text-white">Tune</span></h1>
+                </a>
+            </div>
+            <div class="flex items-center space-x-3" style="margin-left: 10px;">
+                <div id="search-container" class="relative">
+                    <input type="text" id="search-input" placeholder="Search.."
+                        class="input-field rounded-full px-3 py-2 text-sm text-white placeholder-gray-500 focus:outline-none">
+                    <i id="search-icon"
+                        class="fas fa-search text-cyber-blue absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"></i>
+                </div>
+                <button id="music-animation-btn"
+                    class="p-2 rounded-full bg-dark-card hover:bg-cyber-purple/30 transition-colors">
+                    <i class="fas fa-music text-cyber-blue animate-music-beat"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 container mx-auto px-3 py-6">
+        <!-- Trending Playlists -->
+        <section class="mb-6">
+            <h2 class="text-xl font-bold text-white mb-4 flex items-center">
+                <i class="fas fa-bolt text-cyber-red mr-2"></i>
+                Trending Playlists
+            </h2>
+            <div class="music-grid grid gap-4">
+                <div class="music-card p-4 rounded-xl group" data-playlist="cyber-vibes">
+                    <div class="relative mb-3 overflow-hidden rounded-lg">
+                        <img src="https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/a8/6b/c7/a86bc7d9-b459-3082-1dc0-5cd62037e77e/5059863487768.png/600x600bf-60.jpg"
+                            alt="Cyber vibes playlist"
+                            class="w-full object-cover group-hover:scale-105 transition-transform duration-300 aspect-square">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-end p-3">
+                            <button
+                                class="play-btn w-10 h-10 bg-cyber-purple rounded-full flex items-center justify-center cyber-glow"
+                                onclick="playPlaylist('cyber-vibes')">
+                                <i class="fas fa-play text-white text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <h3 class="text-white font-semibold mb-1 text-base">12 Bande</h3>
+                    <p class="text-gray-400 text-xs">Varinder Brar's • 2021</p>
+                </div>
+                <div class="music-card p-4 rounded-xl group" data-playlist="neural-beats">
+                    <div class="relative mb-3 overflow-hidden rounded-lg">
+                        <img src="https://w0.peakpx.com/wallpaper/128/489/HD-wallpaper-on-my-way-alan-walker-dj-kgf-pubg.jpg"
+                            alt="Neural beats playlist"
+                            class="w-full object-cover group-hover:scale-105 transition-transform duration-300 aspect-square">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-end p-3">
+                            <button
+                                class="play-btn w-10 h-10 bg-cyber-blue rounded-full flex items-center justify-center cyber-glow"
+                                onclick="playPlaylist('neural-beats')">
+                                <i class="fas fa-play text-white text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <h3 class="text-white font-semibold mb-1 text-base">On My Way</h3>
+                    <p class="text-gray-400 text-xs">Song by Alan Walker, Farruko, and Sabrina Carpenter ‧ 2019
+                    </p>
+                </div>
+                <div class="music-card p-4 rounded-xl group" data-playlist="quantum-rock">
+                    <div class="relative mb-3 overflow-hidden rounded-lg">
+                        <img src="https://images.news18.com/ibnlive/uploads/2023/11/untitled-design-2023-11-29t154629.313-2023-11-28729883d4c97aecb78238416338655a.jpg"
+                            alt="Quantum rock playlist"
+                            class="w-full object-cover group-hover:scale-105 transition-transform duration-300 aspect-square">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-end p-3">
+                            <button
+                                class="play-btn w-10 h-10 bg-cyber-green rounded-full flex items-center justify-center cyber-glow"
+                                onclick="playPlaylist('quantum-rock')">
+                                <i class="fas fa-play text-white text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <h3 class="text-white font-semibold mb-1 text-base">Arjan Vailly</h3>
+                    <p class="text-gray-400 text-xs">Song by Bhupinder Babbal ‧ 2023
+                    </p>
+                </div>
+                <div class="music-card p-4 rounded-xl group" data-playlist="digital-hiphop">
+                    <div class="relative mb-3 overflow-hidden rounded-lg">
+                        <img src="https://i.ytimg.com/vi/ncu4DJnh6xk/maxresdefault.jpg"
+                            alt="Digital hiphop playlist"
+                            class="w-full object-cover group-hover:scale-105 transition-transform duration-300 aspect-square">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-end p-3">
+                            <button
+                                class="play-btn w-10 h-10 bg-cyber-red rounded-full flex items-center justify-center cyber-glow"
+                                onclick="playPlaylist('digital-hiphop')">
+                                <i class="fas fa-play text-white text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <h3 class="text-white font-semibold mb-1 text-base">
+Beedi</h3>
+                    <p class="text-gray-400 text-xs">Song ‧ 2010
+</p>
+                </div>
+                <div class="music-card p-4 rounded-xl group" data-playlist="digital">
+                    <div class="relative mb-3 overflow-hidden rounded-lg">
+                        <img src="https://i.ndtvimg.com/i/2017-03/randeep-hooda_640x480_61489152185.jpg"
+                            alt="Digital"
+                            class="w-full object-cover group-hover:scale-105 transition-transform duration-300 aspect-square">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-end p-3">
+                            <button
+                                class="play-btn w-10 h-10 bg-cyber-red rounded-full flex items-center justify-center cyber-glow"
+                                onclick="playPlaylist('digital')">
+                                <i class="fas fa-play text-white text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <h3 class="text-white font-semibold mb-1 text-base">
+KILLER CHHORI</h3>
+                    <p class="text-gray-400 text-xs">Song by Anuj Sharma, Bali Sharma, and Ramkesh Jiwanpur Wala ‧ 2025
+
+</p>
+                </div>
+                <div class="music-card p-4 rounded-xl group" data-playlist="baba">
+                    <div class="relative mb-3 overflow-hidden rounded-lg">
+                        <img src="https://c.saavncdn.com/137/Ji-Laage-Babya-Mai-Haryanvi-2025-20250627140416-500x500.jpg"
+                            alt="baba"
+                            class="w-full object-cover group-hover:scale-105 transition-transform duration-300 aspect-square">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-end p-3">
+                            <button
+                                class="play-btn w-10 h-10 bg-cyber-red rounded-full flex items-center justify-center cyber-glow"
+                                onclick="playPlaylist('baba')">
+                                <i class="fas fa-play text-white text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <h3 class="text-white font-semibold mb-1 text-base">
+Ji Laage Babya Mai</h3>
+                    <p class="text-gray-400 text-xs">Song by Aman Jaji and Raj Mawar ‧ 2025</p>
+                </div>
+                <div class="music-card p-4 rounded-xl group" data-playlist="rula">
+                    <div class="relative mb-3 overflow-hidden rounded-lg">
+                        <img src="https://c.saavncdn.com/244/Rula-Diya-Hindi-2024-20240917134147-500x500.jpg"
+                            alt="rula"
+                            class="w-full object-cover group-hover:scale-105 transition-transform duration-300 aspect-square">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-end p-3">
+                            <button
+                                class="play-btn w-10 h-10 bg-cyber-red rounded-full flex items-center justify-center cyber-glow"
+                                onclick="playPlaylist('rula')">
+                                <i class="fas fa-play text-white text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <h3 class="text-white font-semibold mb-1 text-base">Rula Diya</h3>
+                    <p class="text-gray-400 text-xs">Song by Zack Knight ‧ 2025</p>
+                </div>
+                <div class="music-card p-4 rounded-xl group" data-playlist="badshah">
+                    <div class="relative mb-3 overflow-hidden rounded-lg">
+                        <img src="https://media.lyricsmint.com/photos/6497/buzz-by-badshah-aastha-gill-and-priyank-sharma_cover.jpg"
+                            alt="buzz"
+                            class="w-full object-cover group-hover:scale-105 transition-transform duration-300 aspect-square">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-end p-3">
+                            <button
+                                class="play-btn w-10 h-10 bg-cyber-red rounded-full flex items-center justify-center cyber-glow"
+                                onclick="playPlaylist('badshah')">
+                                <i class="fas fa-play text-white text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <h3 class="text-white font-semibold mb-1 text-base">Buzz</h3>
+                    <p class="text-gray-400 text-xs">Song by Aastha Gill ‧ 2018
+</p>
+                </div>
+                <div class="music-card p-4 rounded-xl group" data-playlist="prada">
+                    <div class="relative mb-3 overflow-hidden rounded-lg">
+                        <img src="https://c.saavncdn.com/522/Prada-Punjabi-2018-20220803074505-500x500.jpg"
+                            alt="prada"
+                            class="w-full object-cover group-hover:scale-105 transition-transform duration-300 aspect-square">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-end p-3">
+                            <button
+                                class="play-btn w-10 h-10 bg-cyber-red rounded-full flex items-center justify-center cyber-glow"
+                                onclick="playPlaylist('prada')">
+                                <i class="fas fa-play text-white text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <h3 class="text-white font-semibold mb-1 text-base">Prada</h3>
+                    <p class="text-gray-400 text-xs">(2018) by Jass Manak
+</p>
+                </div>
+                <div class="music-card p-4 rounded-xl group" data-playlist="kharbuja">
+                    <div class="relative mb-3 overflow-hidden rounded-lg">
+                        <img src="https://i.scdn.co/image/ab67616d0000b2739949e02da1e8b64dace9c146"
+                            alt="kharbuja"
+                            class="w-full object-cover group-hover:scale-105 transition-transform duration-300 aspect-square">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-end p-3">
+                            <button
+                                class="play-btn w-10 h-10 bg-cyber-red rounded-full flex items-center justify-center cyber-glow"
+                                onclick="playPlaylist('kharbuja')">
+                                <i class="fas fa-play text-white text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <h3 class="text-white font-semibold mb-1 text-base">kharbuja</h3>
+                    <p class="text-gray-400 text-xs">Masoom Sharma‧ 2019
+</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recently Played -->
+        <section class="mb-6">
+            <h2 class="text-xl font-bold text-white mb-4 flex items-center">
+                <i class="fas fa-clock text-cyber-blue mr-2"></i>
+                Recently Played
+            </h2>
+            <div class="space-y-3">
+                <div class="music recent p-4 rounded-xl flex items-center justify-between group" data-song="song1">
+                    <div class="flex items-center space-x-4">
+                        <div class="relative">
+                            <img src="https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/a8/6b/c7/a86bc7d9-b459-3082-1dc0-5cd62037e77e/5059863487768.png/600x600bf-60.jpg"
+                                alt="Electric dreams" class="w-16 h-16 rounded-lg album-art object-cover cyber-glow">
+                            <div
+                                class="absolute inset-0 bg-black/50 rounded-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                <i class="fas fa-play text-white text-base"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-white font-semibold text-base">12 Bande</h3>
+                            <p class="text-gray-400 text-sm">Neon Wave • 3:45</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <button class="like-btn text-gray-400 hover:text-cyber-purple" onclick="toggleLike('song1')">
+                            <i class="far fa-heart text-base"></i>
+                        </button>
+                        <button class="add-btn text-gray-400 hover:text-cyber-blue" onclick="addToPlaylist('song1')">
+                            <i class="fas fa-plus text-base"></i>
+                        </button>
+                        <button class="queue-btn text-gray-400 hover:text-cyber-green" onclick="addToQueue('song1')">
+                            <i class="fas fa-list-ul text-base"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="music recent p-4 rounded-xl flex items-center justify-between group" data-song="song2">
+                    <div class="flex items-center space-x-4">
+                        <div class="relative">
+                            <img src="https://w0.peakpx.com/wallpaper/128/489/HD-wallpaper-on-my-way-alan-walker-dj-kgf-pubg.jpg"
+                                alt="Summer breeze" class="w-16 h-16 rounded-lg album-art object-cover cyber-glow">
+                            <div
+                                class="absolute inset-0 bg-black/50 rounded-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                <i class="fas fa-play text-white text-base"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-white font-semibold text-base">On My Way</h3>
+                            <p class="text-gray-400 text-sm">Chill Hop • 4:20</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <button class="like-btn text-gray-400 hover:text-cyber-purple" onclick="toggleLike('song2')">
+                            <i class="far fa-heart text-base"></i>
+                        </button>
+                        <button class="add-btn text-gray-400 hover:text-cyber-blue" onclick="addToPlaylist('song2')">
+                            <i class="fas fa-plus text-base"></i>
+                        </button>
+                        <button class="queue-btn text-gray-400 hover:text-cyber-green" onclick="addToQueue('song2')">
+                            <i class="fas fa-list-ul text-base"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="music recent p-4 rounded-xl flex items-center justify-between group" data-song="song3">
+                    <div class="flex items-center space-x-4">
+                        <div class="relative">
+                            <img src="https://images.news18.com/ibnlive/uploads/2023/11/untitled-design-2023-11-29t154629.313-2023-11-28729883d4c97aecb78238416338655a.jpg"
+                                alt="Thunder road" class="w-16 h-16 rounded-lg album-art object-cover cyber-glow">
+                            <div
+                                class="absolute inset-0 bg-black/50 rounded-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                <i class="fas fa-play text-white text-base"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-white font-semibold text-base">Arjan Vailly</h3>
+                            <p class="text-gray-400 text-sm">Rock Legends • 5:15</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <button class="like-btn text-gray-400 hover:text-cyber-purple" onclick="toggleLike('song3')">
+                            <i class="far fa-heart text-base"></i>
+                        </button>
+                        <button class="add-btn text-gray-400 hover:text-cyber-blue" onclick="addToPlaylist('song3')">
+                            <i class="fas fa-plus text-base"></i>
+                        </button>
+                        <button class="queue-btn text-gray-400 hover:text-cyber-green" onclick="addToQueue('song3')">
+                            <i class="fas fa-list-ul text-base"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="music recent p-4 rounded-xl flex items-center justify-between group" data-song="song4">
+                    <div class="flex items-center space-x-4">
+                        <div class="relative">
+                            <img src="https://i.ytimg.com/vi/ncu4DJnh6xk/maxresdefault.jpg"
+                                alt="Thunder road" class="w-16 h-16 rounded-lg album-art object-cover cyber-glow">
+                            <div
+                                class="absolute inset-0 bg-black/50 rounded-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                <i class="fas fa-play text-white text-base"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-white font-semibold text-base">Beedi</h3>
+                            <p class="text-gray-400 text-sm">Song ‧ 2010
+</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <button class="like-btn text-gray-400 hover:text-cyber-purple" onclick="toggleLike('song4')">
+                            <i class="far fa-heart text-base"></i>
+                        </button>
+                        <button class="add-btn text-gray-400 hover:text-cyber-blue" onclick="addToPlaylist('song4')">
+                            <i class="fas fa-plus text-base"></i>
+                        </button>
+                        <button class="queue-btn text-gray-400 hover:text-cyber-green" onclick="addToQueue('song4')">
+                            <i class="fas fa-list-ul text-base"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="music recent p-4 rounded-xl flex items-center justify-between group" data-song="song5">
+                    <div class="flex items-center space-x-4">
+                        <div class="relative">
+                            <img src="https://i.ndtvimg.com/i/2017-03/randeep-hooda_640x480_61489152185.jpg"
+                                alt="Thunder road" class="w-16 h-16 rounded-lg album-art object-cover cyber-glow">
+                            <div
+                                class="absolute inset-0 bg-black/50 rounded-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                <i class="fas fa-play text-white text-base"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-white font-semibold text-base">KILLER CHHORI</h3>
+                            <p class="text-gray-400 text-sm">Song ‧ 2025</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <button class="like-btn text-gray-400 hover:text-cyber-purple" onclick="toggleLike('song5')">
+                            <i class="far fa-heart text-base"></i>
+                        </button>
+                        <button class="add-btn text-gray-400 hover:text-cyber-blue" onclick="addToPlaylist('song5')">
+                            <i class="fas fa-plus text-base"></i>
+                        </button>
+                        <button class="queue-btn text-gray-400 hover:text-cyber-green" onclick="addToQueue('song5')">
+                            <i class="fas fa-list-ul text-base"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="music recent p-4 rounded-xl flex items-center justify-between group" data-song="song6">
+                    <div class="flex items-center space-x-4">
+                        <div class="relative">
+                            <img src="https://c.saavncdn.com/137/Ji-Laage-Babya-Mai-Haryanvi-2025-20250627140416-500x500.jpg"
+                                alt="Thunder road" class="w-16 h-16 rounded-lg album-art object-cover cyber-glow">
+                            <div
+                                class="absolute inset-0 bg-black/50 rounded-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                <i class="fas fa-play text-white text-base"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-white font-semibold text-base">Ji Laage Babya Mai</h3>
+                            <p class="text-gray-400 text-sm">Raj Mawar ‧ 2025</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <button class="like-btn text-gray-400 hover:text-cyber-purple" onclick="toggleLike('song6')">
+                            <i class="far fa-heart text-base"></i>
+                        </button>
+                        <button class="add-btn text-gray-400 hover:text-cyber-blue" onclick="addToPlaylist('song6')">
+                            <i class="fas fa-plus text-base"></i>
+                        </button>
+                        <button class="queue-btn text-gray-400 hover:text-cyber-green" onclick="addToQueue('song6')">
+                            <i class="fas fa-list-ul text-base"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="music recent p-4 rounded-xl flex items-center justify-between group" data-song="song7">
+                    <div class="flex items-center space-x-4">
+                        <div class="relative">
+                            <img src="https://c.saavncdn.com/244/Rula-Diya-Hindi-2024-20240917134147-500x500.jpg"
+                                alt="Thunder road" class="w-16 h-16 rounded-lg album-art object-cover cyber-glow">
+                            <div
+                                class="absolute inset-0 bg-black/50 rounded-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                <i class="fas fa-play text-white text-base"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-white font-semibold text-base">Rula Diya</h3>
+                            <p class="text-gray-400 text-sm">Song by Zack Knight ‧ 2025
+</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <button class="like-btn text-gray-400 hover:text-cyber-purple" onclick="toggleLike('song7')">
+                            <i class="far fa-heart text-base"></i>
+                        </button>
+                        <button class="add-btn text-gray-400 hover:text-cyber-blue" onclick="addToPlaylist('song7')">
+                            <i class="fas fa-plus text-base"></i>
+                        </button>
+                        <button class="queue-btn text-gray-400 hover:text-cyber-green" onclick="addToQueue('song7')">
+                            <i class="fas fa-list-ul text-base"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="music recent p-4 rounded-xl flex items-center justify-between group" data-song="song8">
+                    <div class="flex items-center space-x-4">
+                        <div class="relative">
+                            <img src="https://media.lyricsmint.com/photos/6497/buzz-by-badshah-aastha-gill-and-priyank-sharma_cover.jpg"
+                                alt="Thunder road" class="w-16 h-16 rounded-lg album-art object-cover cyber-glow">
+                            <div
+                                class="absolute inset-0 bg-black/50 rounded-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                <i class="fas fa-play text-white text-base"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-white font-semibold text-base">Buzz</h3>
+                            <p class="text-gray-400 text-sm">Aastha Gill ‧ 2018
+
+</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <button class="like-btn text-gray-400 hover:text-cyber-purple" onclick="toggleLike('song8')">
+                            <i class="far fa-heart text-base"></i>
+                        </button>
+                        <button class="add-btn text-gray-400 hover:text-cyber-blue" onclick="addToPlaylist('song8')">
+                            <i class="fas fa-plus text-base"></i>
+                        </button>
+                        <button class="queue-btn text-gray-400 hover:text-cyber-green" onclick="addToQueue('song8')">
+                            <i class="fas fa-list-ul text-base"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="music recent p-4 rounded-xl flex items-center justify-between group" data-song="song9">
+                    <div class="flex items-center space-x-4">
+                        <div class="relative">
+                            <img src="https://c.saavncdn.com/522/Prada-Punjabi-2018-20220803074505-500x500.jpg"
+                                alt="Thunder road" class="w-16 h-16 rounded-lg album-art object-cover cyber-glow">
+                            <div
+                                class="absolute inset-0 bg-black/50 rounded-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                <i class="fas fa-play text-white text-base"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-white font-semibold text-base">Prada</h3>
+                            <p class="text-gray-400 text-sm">(2018) by Jass Manak
+
+</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <button class="like-btn text-gray-400 hover:text-cyber-purple" onclick="toggleLike('song9')">
+                            <i class="far fa-heart text-base"></i>
+                        </button>
+                        <button class="add-btn text-gray-400 hover:text-cyber-blue" onclick="addToPlaylist('song9')">
+                            <i class="fas fa-plus text-base"></i>
+                        </button>
+                        <button class="queue-btn text-gray-400 hover:text-cyber-green" onclick="addToQueue('song9')">
+                            <i class="fas fa-list-ul text-base"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="music recent p-4 rounded-xl flex items-center justify-between group" data-song="song10">
+                    <div class="flex items-center space-x-4">
+                        <div class="relative">
+                            <img src="https://i.scdn.co/image/ab67616d0000b2739949e02da1e8b64dace9c146"
+                                alt="Thunder road" class="w-16 h-16 rounded-lg album-art object-cover cyber-glow">
+                            <div
+                                class="absolute inset-0 bg-black/50 rounded-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                <i class="fas fa-play text-white text-base"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-white font-semibold text-base">kharbuja</h3>
+                            <p class="text-gray-400 text-sm">Masoom Sharma‧ 2019
+
+</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <button class="like-btn text-gray-400 hover:text-cyber-purple" onclick="toggleLike('song10')">
+                            <i class="far fa-heart text-base"></i>
+                        </button>
+                        <button class="add-btn text-gray-400 hover:text-cyber-blue" onclick="addToPlaylist('song10')">
+                            <i class="fas fa-plus text-base"></i>
+                        </button>
+                        <button class="queue-btn text-gray-400 hover:text-cyber-green" onclick="addToQueue('song10')">
+                            <i class="fas fa-list-ul text-base"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- AI-Powered Recommendations -->
+        <section>
+            <h2 class="text-xl font-bold text-white mb-4 flex items-center">
+                <i class="fas fa-brain text-cyber-purple mr-2"></i>
+                AI-Powered Recommendations
+            </h2>
+            <div class="music-grid grid gap-4">
+                <div class="music-card p-4 rounded-xl group" data-playlist="ai-mix-1">
+                    <div class="relative mb-3 overflow-hidden rounded-lg">
+                        <img src="https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/a8/6b/c7/a86bc7d9-b459-3082-1dc0-5cd62037e77e/5059863487768.png/600x600bf-60.jpg"
+                            alt="AI daily mix"
+                            class="w-full object-cover group-hover:scale-105 transition-transform duration-300 aspect-square">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-end p-3">
+                            <button
+                                class="play-btn w-10 h-10 bg-cyber-purple rounded-full flex items-center justify-center cyber-glow"
+                                onclick="playPlaylist('ai-mix-1')">
+                                <i class="fas fa-play text-white text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <h3 class="text-white font-semibold mb-1 text-base">AI Mix Alpha</h3>
+                    <p class="text-gray-400 text-xs">Tailored to your vibe</p>
+                </div>
+                <div class="music-card p-4 rounded-xl group" data-playlist="ai-mix-2">
+                    <div class="relative mb-3 overflow-hidden rounded-lg">
+                        <img src="https://w0.peakpx.com/wallpaper/128/489/HD-wallpaper-on-my-way-alan-walker-dj-kgf-pubg.jpg"
+                            alt="AI chill mix"
+                            class="w-full object-cover group-hover:scale-105 transition-transform duration-300 aspect-square">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-end p-3">
+                            <button
+                                class="play-btn w-10 h-10 bg-cyber-blue rounded-full flex items-center justify-center cyber-glow"
+                                onclick="playPlaylist('ai-mix-2')">
+                                <i class="fas fa-play text-white text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <h3 class="text-white font-semibold mb-1 text-base">AI Chill Beta</h3>
+                    <p class="text-gray-400 text-xs">Based on your mood</p>
+                </div>
+                <div class="music-card p-4 rounded-xl group" data-playlist="discover-ai">
+                    <div class="relative mb-3 overflow-hidden rounded-lg">
+                        <img src="https://images.news18.com/ibnlive/uploads/2023/11/untitled-design-2023-11-29t154629.313-2023-11-28729883d4c97aecb78238416338655a.jpg"
+                            alt="AI discover playlist"
+                            class="w-full object-cover group-hover:scale-105 transition-transform duration-300 aspect-square">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-end p-3">
+                            <button
+                                class="play-btn w-10 h-10 bg-cyber-green rounded-full flex items-center justify-center cyber-glow"
+                                onclick="playPlaylist('discover-ai')">
+                                <i class="fas fa-play text-white text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <h3 class="text-white font-semibold mb-1 text-base">Discover AI</h3>
+                    <p class="text-gray-400 text-xs">New discoveries weekly</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Music Player -->
+    <div id="music-player" class="py-3 px-3 hidden">
+        <button id="close-player" class="close-player">
+            <i class="fas fa-chevron-down text-sm"></i>
+        </button>
+        <div class="container mx-auto flex flex-col md:flex-row items-center justify-between player-controls gap-3">
+            <div class="flex items-center space-x-3 w-full md:w-auto">
+                <img id="player-album-art"
+                    src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/3b38ccb0-e1c1-402e-847b-a7675ac53cdf.png"
+                    alt="Current track art" class="w-12 h-12 rounded-lg album-art object-cover cyber-glow">
+                <div>
+                    <h3 id="player-song-title" class="text-white font-semibold text-sm">Electric Dreams</h3>
+                    <p id="player-artist" class="text-gray-400 text-xs">Neon Wave</p>
+                </div>
+            </div>
+            <div class="flex-1 w-full">
+                <div class="flex items-center justify-center space-x-3 mb-2">
+                    <button id="shuffle-btn" class="text-gray-400 hover:text-cyber-red text-sm">
+                        <i class="fas fa-random"></i>
+                    </button>
+                    <button id="prev-btn" class="text-gray-400 hover:text-cyber-blue text-sm">
+                        <i class="fas fa-step-backward"></i>
+                    </button>
+                    <button id="play-pause-btn"
+                        class="w-10 h-10 rounded-full bg-cyber-purple/30 flex items-center justify-center cyber-glow">
+                        <i class="fas fa-play text-sm"></i>
+                    </button>
+                    <button id="next-btn" class="text-gray-400 hover:text-cyber-blue text-sm">
+                        <i class="fas fa-step-forward"></i>
+                    </button>
+                    <button id="repeat-btn" class="text-gray-400 hover:text-cyber-red text-sm">
+                        <i class="fas fa-repeat"></i>
+                    </button>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <span id="current-time" class="text-gray-400 text-xs">0:00</span>
+                    <input type="range" id="progress-bar" class="progress-bar" min="0" max="100" value="0">
+                    <span id="duration" class="text-gray-400 text-xs">3:45</span>
+                </div>
+                <div id="lyrics-container" class="lyrics-container scrollbar-hide hidden"></div>
+            </div>
+            <div class="flex items-center space-x-3 w-full md:w-auto justify-end">
+                <div class="flex items-center space-x-2">
+                    <button id="mute-btn" class="text-cyber-green hover:text-cyber-green/80 text-sm">
+                        <i class="fas fa-volume-high"></i>
+                    </button>
+                    <input type="range" id="volume-slider" class="volume-slider w-16" min="0" max="100" value="70">
+                </div>
+                <button id="queue-toggle" class="text-gray-400 hover:text-cyber-green text-sm">
+                    <i class="fas fa-list"></i>
+                </button>
+                <button id="lyrics-toggle" class="text-gray-400 hover:text-cyber-purple text-sm">
+                    <i class="fas fa-closed-captioning"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Playlist Modal -->
+    <div id="modal" class="fixed inset-0 bg-black/60 hidden flex items-center justify-center z-50">
+        <div class="modal-content music-card p-4 rounded-xl cyber-glow w-full max-w-sm">
+            <h2 id="modal-title" class="text-lg font-bold gradient-text mb-3">Add to Playlist</h2>
+            <div id="modal-content" class="space-y-3">
+                <select id="playlist-select" class="input-field">
+                    <option value="cyber-vibes">Cyber Vibes</option>
+                    <option value="neural-beats">Neural Beats</option>
+                    <option value="quantum-rock">Quantum Rock</option>
+                    <option value="digital-hiphop">Digital HipHop</option>
+                </select>
+                <input type="text" id="new-playlist-name" placeholder="New playlist name..." class="input-field">
+            </div>
+            <div class="flex justify-end space-x-2 mt-3">
+                <button id="modal-cancel"
+                    class="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 rounded-lg text-white text-sm">Cancel</button>
+                <button id="modal-save"
+                    class="px-3 py-1.5 bg-cyber-purple hover:bg-cyber-purple/80 rounded-lg text-white text-sm">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Queue Sidebar -->
+    <div id="queue-sidebar"
+        class="fixed top-0 right-0 w-72 h-full bg-dark-bg p-4 transform translate-x-full transition-transform duration-300 z-50 hidden">
+        <button id="close-queue" class="absolute top-3 right-3 text-gray-400 hover:text-cyber-red">
+            <i class="fas fa-times text-sm"></i>
+        </button>
+        <h2 class="text-lg font-bold gradient-text mb-3">Play Queue</h2>
+        <div id="queue-list" class="space-y-2 scrollbar-hide overflow-y-auto h-[calc(100%-70px)]"></div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer border-t border-cyber-purple/30">
+        <div class="footer-wave">
+            <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120"
+                preserveAspectRatio="none">
+                <path
+                    d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z"
+                    opacity=".25" class="shape-fill"></path>
+                <path
+                    d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z"
+                    opacity=".5" class="shape-fill"></path>
+                <path
+                    d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z"
+                    class="shape-fill"></path>
+            </svg>
+        </div>
+        <div class="container mx-auto px-3 py-6 relative z-10">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+                <div>
+                    <div class="flex items-center space-x-2 mb-3">
+                        <div
+                            class="w-6 h-6 bg-gradient-to-r from-cyber-purple to-cyber-blue rounded-full flex items-center justify-center">
+                            <i class="fas fa-headphones text-white text-xs"></i>
+                        </div>
+                        <h3 class="text-lg font-bold gradient-text">CyberTune</h3>
+                    </div>
+                    <p class="text-gray-400 text-xs mb-3">
+                        Discover music with a futuristic edge. AI-driven recommendations and seamless streaming.
+                    </p>
+                    <div class="flex space-x-3">
+                        <a href="#" class="text-cyber-purple hover:text-cyber-blue transition-colors text-sm">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="text-cyber-purple hover:text-cyber-blue transition-colors text-sm">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="text-cyber-purple hover:text-cyber-blue transition-colors text-sm">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="text-cyber-purple hover:text-cyber-blue transition-colors text-sm">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-white font-semibold mb-3 text-cyber-blue text-sm">Navigation</h4>
+                    <ul class="space-y-2 text-xs">
+                        <li><a href="#" class="text-gray-400 hover:text-cyber-purple transition-colors">Home</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-cyber-purple transition-colors">Library</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-cyber-purple transition-colors">Search</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-cyber-purple transition-colors">Profile</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-semibold mb-3 text-cyber-green text-sm">Features</h4>
+                    <ul class="space-y-2 text-xs">
+                        <li><a href="#" class="text-gray-400 hover:text-cyber-purple transition-colors">AI Playlists</a>
+                        </li>
+                        <li><a href="#" class="text-gray-400 hover:text-cyber-purple transition-colors">Lyrics Sync</a>
+                        </li>
+                        <li><a href="#" class="text-gray-400 hover:text-cyber-purple transition-colors">Offline Mode</a>
+                        </li>
+                        <li><a href="#" class="text-gray-400 hover:text-cyber-purple transition-colors">Crossfade</a>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-semibold mb-3 text-cyber-red text-sm">Support</h4>
+                    <div class="space-y-2 text-xs text-gray-400">
+                        <p><i class="fas fa-envelope text-cyber-blue mr-1"></i> support@cybertune.com</p>
+                        <p><i class="fas fa-phone text-cyber-blue mr-1"></i> +1 (555) 123-4567</p>
+                        <p><i class="fas fa-map-marker-alt text-cyber-blue mr-1"></i> Digital Realm 101</p>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 pt-4">
+                <div class="flex flex-col md:flex-row justify-between items-center gap-3 text-xs">
+                    <p class="text-gray-400">
+                        © 2025 CyberTune. All rights reserved.
+                    </p>
+                    <p class="text-gray-400">
+                        © Created By Amit Pandey.
+                    </p>
+                    <div class="flex space-x-4 text-gray-400">
+                        <a href="#" class="hover:text-cyber-purple transition-colors">Privacy Policy</a>
+                        <a href="#" class="hover:text-cyber-purple transition-colors">Terms of Use</a>
+                        <a href="#" class="hover:text-cyber-purple transition-colors">Cookies</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+       const audio = new Audio();
+let currentSongIndex = 0;
+let isPlaying = false;
+let isShuffling = false;
+let repeatMode = 0; // 0: off, 1: all, 2: one
+let isPlayerVisible = false;
+let isMuted = false;
+let playQueue = [];
+let isDarkMode = true;
+
+const songs = [
+    {
+        id: 'song1',
+        title: '12 Bande',
+        artist: 'Varinder Brar',
+        duration: '3:45',
+        src: './music/12_Bande_song___full_audio(128k).mp3',
+        albumArt: 'https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/a8/6b/c7/a86bc7d9-b459-3082-1dc0-5cd62037e77e/5059863487768.png/600x600bf-60.jpg',
+        lyrics: `Provide By Desi Beats
+Ho shanti ji hundi bilo sadde aun te
+Baas maut he mile saanu hath paun te
+Ni oddan janhit wich jaari kitaa sarkar ne
+Ni lai paa bandi hoyi ae sadde wangu jeon te
+Provide By Desi Beats
+Dekhu hath kedaa paau billo meri aan nu
+Tu baas ik vari ake khaad jatt nal ni
+Provide By Desi Beats
+6 sajje khabbe, 6 hunde dabb nal ni
+Kull baara bande hunde tere jatt nal ni
+6 sajje khabbe, 6 hunde dabb nal ni
+Kull bara bande hunde tere jatt nal ni
+6 sajje khabbe, 6 hunde dabb nal ni
+6 sajje khabbe, 6 hunde dabb nal ni
+Provide By Desi Beats
+Naa marheya naa yari
+Nahi maarheya naa billo vair rakha
+Tussi keda saale laagde joh tohdi kahir rakha
+Baapu mere utte rakhi
+Ni mai roab tere shehar rakha
+Maarheya kamma lai pind vali Billo nehaar rakha
+Khet khut panga pehe es vaaste
+Ni dabbe tin chaar katte Billo vatt nal ni
+Provide By Desi Beats
+6 sajje khabbe, 6 hunde dabb nal ni
+Kull baara bande hunde tere jatt nal ni
+6 sajje khabbe, 6 hunde dabb nal ni
+Kull bara bande hunde tere jatt nal ni
+6 sajje khabbe, 6 hunde dabb nal ni
+Provide By Desi Beats
+Ho Kam sadde kale bhave chitti Gaddi nu compound rakha
+Loka di jithe mukke oddo Aage pohuch rakha
+Ikk jebi bikaneri duji jebi raund rakha
+Jeho jaa mai aap Bande ohjee surround rakha
+Ooda sirr surr khole aa ni baade jatt ne
+Paar dil naa mai khola kisi runn nal ni
+Provide By Desi Beats
+6 sajje khabbe, 6 hunde dabb nal ni
+Kull baara bande hunde tere jatt nal ni
+6 sajje khabbe, 6 hunde dabb nal ni
+Kull bara bande hunde tere jatt nal ni
+Provide By Desi
+Do number de dhandhe doh number he gaddi e
+Pehle te yar dujje number te naddi ae
+Gya nai nishaan jide saadi kera vajji ae
+Pehla todd de garoor fer tod de ne haddi
+Log aire gaire nal ni compare kaarde
+Ni meri kaalam nu tolde aa gun nal ni
+Provide By Desi Beats
+6 sajje khabbe, 6 hunde dabb nal ni
+Kull baara bande hunde tere jatt nal ni
+6 sajje khabbe, 6 hunde dabb nal ni
+Kull bara bande hunde tere jatt nal ni
+Provide By Desi Beats
+Jide purkheya ne kiti sardaari hoye
+Ohne fame lai ki kise da bann naa sipaahi aa
+Loki kehndi saanu hor taa kuch pta ni
+Paar varinder brar plus lyrics
+Iss equal toh tabahi hai`
+    },
+    {
+        id: 'song2',
+        title: 'On My Way',
+        artist: 'Alan Walker',
+        duration: '4:20',
+        src: './music/Alan_Walker,_Sabrina_Carpenter_&_Farruko_On_My_WayBass_BoostedHD256k.mp3',
+        albumArt: 'https://w0.peakpx.com/wallpaper/128/489/HD-wallpaper-on-my-way-alan-walker-dj-kgf-pubg.jpg',
+        lyrics: `I'm sorry but, don't wanna talk
+I need a moment before I go, it's nothing personal
+I draw the blinds, they don't need to see me cry
+'Cause even if they understand, they don't understand
+
+So then, when I'm finished
+I'm all 'bout my business and ready to save the world
+I'm taking my misery, make it my bitch
+Can't be everyone's favorite girl
+
+So take aim and fire away
+I've never been so wide awake
+No, nobody but me can keep me safe
+And I'm on my way
+The blood moon is on the rise
+The fire burning in my eyes
+No, nobody but me can keep me safe
+And I'm on my way
+
+Blep, yah, yah
+Farru'
+Yah-yah-yah-yah
+
+Lo siento mucho (Farru'), pero me voy (Eh)
+Porque a tu lado me di cuenta que nada soy (Eh-ey)
+Y me cansé de luchar y de guerrear en vano
+De estar en la línea de fuego y de meter la mano
+Acepto mis errores, también soy humano
+Y tú no vez que lo hago porque te amo (Pu-pu-pu-pum)
+
+Pero ya (Ya), no tengo más na' que hacer aquí (Aquí)
+Me voy, llegó la hora 'e partir (Partir)
+De mi propio camino, seguiré lejos de ti
+
+So take aim and fire away
+I've never been so wide awake
+No, nobody but me can keep me safe
+And I'm on my way
+The blood moon is on the rise (Is on the rise, na-na)
+The fire burning in my eyes (The fire burning in my eyes, no)
+No, nobody but me can keep me safe
+And I'm on my way
+
+Blep
+I'm on my way
+
+Everybody, everybody keep me safe
+Everybody, everybody keep me safe
+Everybody, everybody keep me safe
+Everybody, everybody everybody on my way
+
+So take aim and fire away
+I've never been so wide awake
+No, nobody but me can keep me safe
+And I'm on my way
+The blood moon is on the rise
+The fire burning in my eyes
+No, nobody but me can keep me safe`
+    },
+    {
+        id: 'song3',
+        title: 'Arjan Vailly',
+        artist: 'Bhupinder Babbal',
+        duration: '5:15',
+        src: './music/Arjan_Vailly_Slowed_Reverb_Bhupinder_Babbal_BARATO_NATION128k.mp3',
+        albumArt: 'https://images.news18.com/ibnlive/uploads/2023/11/untitled-design-2023-11-29t154629.313-2023-11-28729883d4c97aecb78238416338655a.jpg',
+        lyrics: `Arjan vaili ne... (Vaili ne)
+Oh, khaade vich daang khadhke (chakko)
+Oh, khaade vich daang khadhke
+Othey ho gayi ladaai bhaari
+Arjan vaili ne...
+Ho, arjan vaili ne, oh, pair jod ke gandaasi maari
+Arjan vaili ne, oh, pair jod ke gandaasi maari
+Takkuye gandaasa chhaviyaan (teri, oye!)
+Takkuye gandaasa chhaviyaan
+Kehnde, "Khadhk paiyaan kirpaanaan"
+Vi saanhaan waangu jatt bhid'de
+Ho, saanhaan waangu jatt bhid'de
+Sakhi sukh na dise bhagwaanaan
+"Ho, leero-leer ho jaaoogi"
+"Ho, leero-leer ho jaaoogi"
+Kehnde bachnon di phullkaari
+Arjan vaili ne, oh, pair jod ke gandaasi maari
+Arjan vaili ne, oh, pair jod ke gandaasi maari
+Kundeyaan da sing phass gaye
+Ve koyi nittroon badeve khaani
+Dharti 'te khoon dullheya
+Ve jivein tidke ghade 'chon paani
+Oh, sheraan waangu yaar khadh gaye (chakko)
+Oh, sheraan waangu yaar khadh gaye
+Vaili naal si jinhaan de yaari
+Arjan vaili ne, oh, pair jod ke gandaasi maari
+Arjan vaili ne, oh, pair jod ke gandaasi maari
+Chaare-paase raula pai geya
+Ho, chaare-paase raula pai geya
+Jadon maareya gandaasa hatth jod ke
+Ho, jadon maareya gandaasa hatth jod ke
+Ho, chaare-paase raula pai geya
+Jadon maareya gandaasa hatth jod ke
+Khoon de taraale challde
+Thalle sutt lai hatth thona nu marod ke
+Sher jeha rohab jatt da
+Sher jeha rohab jatt da
+Vi thalle rakkhda police sarkaari
+Arjan vaili ne, oh, pair jod ke gandaasi maari
+Arjan vaili ne, oh, pair jod ke gandaasi maari`
+    },
+    {
+        id: 'song4',
+        title: 'Beedi',
+        artist: 'Song ‧ 2010',
+        duration: '5:15',
+        src: './music/Beedi_Full_Audio_Song_Omkara_Bipasha_Basu_Ajay_Devgan,_Saif_Ali.mp3',
+        albumArt: 'https://i.ytimg.com/vi/ncu4DJnh6xk/maxresdefault.jpg',
+        lyrics: `Naa gilaaf~~
+Naa lihaaf~~
+Naa gilaf, naa lihaf
+Thandi hawa bhi khilaf
+Sasuri~ee, he-he-he
+Naa gilaf, naa lihaf
+Thandi hawa bhi khilaf
+Sasuri~ee
+Ho itani sardi hai
+Kisika lihaf lehi leh~ye~ye~
+Ho ja padosi ke chuleh se
+Aag lehi leh
+Ja padosi ke chuleh se
+Aag lehi leh~
+
+Haa~ Beedi jalayile~
+Jigar se piya~
+Jigarma badi aag hai
+
+Beedi jalayile jigar se piya
+Jigarma badi aag hai
+Dhuan na nikali
+O lab se piya, aah-ha~
+Dhuan na nikali
+O lab se piya…
+Je duniya badi dhank hai
+
+Haan beedi jalayile
+Jigar se piya
+Jigarma badi aag hai
+
+Naa gilaf, naa lihaf
+Thandi hawa bhi khilaf
+
+Sasuri~ee
+
+Ho itani sardi hai
+Kisika lihaf lehi leh
+Ho ja padosi ke chuleh se
+Aag lehi leh
+
+Ja padosi ke chuleh se(lai~le~)
+Aag lehi leh (lai~le~)
+Naa Kasuur~~
+Naa fatuur~~
+
+Naa kasur, naa fatur
+Bina juram ke hajur mar gaye
+Ho mar gaye
+
+Ho~ aise ik din duphari
+Bulai liyo re
+Bandh ghungru kachehri
+Lagaliyo re
+Bulayliyo re, bulayliyo re dupehri
+
+Lagayilo re, lagayilo re kachehri
+Angithi jalayile
+
+Jigar se piya…
+Jigarma badi aag hai
+
+Beedi jalayile jigar se piya
+Jigarma badi aag haii~~
+
+Ho~ naa toh chakkuon ki dhar
+Ho naa darati…naa kattar
+Naa toh chakkuon ki dhar
+Naa darati, naa katar
+Aisa kate ke dat kaa
+Nisan chhod de
+Ye katayi toh koi bhi
+Kisan jod de
+O aise jalim kaa jod de
+Makan jod de
+Re bilo…
+Jalim ka jod de makan jod de-re
+Aise jalim ka, o aise jalim ka
+Aise jalim ka jod de makan jod de
+
+Naa bulaaya~~
+Naa bataaya~~
+Naa bulaya, naa bataya
+Mane nind se jagaya,hay~re~
+
+Aise chonkele hath mein
+Nasib aa gaya~
+Woh ilaychi khilayike
+Karib aa gaya
+Koyila jalayile jigar se piya~
+Jigarma… aag hai
+
+Itani sardi hai
+Kisika lihaf lehi leh~ee~
+Ho ja padosi…
+Ho ja padosi…
+Ja-ja padosi…
+Ho ja padosi ke chuleh se
+Aag lehi leh…`
+    },
+    {
+        id: 'song5',
+        title: 'KILLER CHHORI',
+        artist: 'Artists: Bali Sharma, Ramkesh Jiwanpur Wala, Anuj Sharma',
+        duration: '5:15',
+        src: './music/KILLER_CHHORI__feat._ruba_khan_(128k).mp3',
+        albumArt: 'https://i.ndtvimg.com/i/2017-03/randeep-hooda_640x480_61489152185.jpg',
+        lyrics: ''
+    },
+    {
+        id: 'song6',
+        title: 'Ji Laage Babya Mai',
+        artist: 'Song by Aman Jaji and Raj Mawar ‧ 2025',
+        duration: '5:15',
+        src: './music/Ji_Laage_Se_Babya_Mai__Official_Video__Aman_Jaji__.mp3',
+        albumArt: 'https://c.saavncdn.com/137/Ji-Laage-Babya-Mai-Haryanvi-2025-20250627140416-500x500.jpg',
+        lyrics: ''
+    },
+    {
+        id: 'song7',
+        title: 'Rula Diya',
+        artist: 'Song by Zack Knight ‧ 2025',
+        duration: '5:15',
+        src: './music/Zack_knight_new_song_ruladiya(256k).mp3',
+        albumArt: 'https://c.saavncdn.com/244/Rula-Diya-Hindi-2024-20240917134147-500x500.jpg',
+        lyrics: ''
+    },
+    {
+        id: 'song8',
+        title: 'Buzz',
+        artist: 'Song by Aastha Gill ‧ 2018',
+        duration: '5:15',
+        src: './music/badshah.mp3',
+        albumArt: 'https://media.lyricsmint.com/photos/6497/buzz-by-badshah-aastha-gill-and-priyank-sharma_cover.jpg',
+        lyrics: ''
+    },
+    {
+        id: 'song9',
+        title: 'Prada',
+        artist: '(2018) by Jass Manak',
+        duration: '5:15',
+        src: './music/Prada_Punjabi_Dj_Remix_2018_Full_Vibration_And_Dholki_Mix_Dj_Song.mp3',
+        albumArt: 'https://c.saavncdn.com/522/Prada-Punjabi-2018-20220803074505-500x500.jpg',
+        lyrics: ''
+    },
+    {
+        id: 'song10',
+        title: 'kharbuja',
+        artist: 'Masoom Sharma ‧ 2019',
+        duration: '5:15',
+        src: './music/Kharbuja_New_Dj_Song_Latest_Song_Masoom_Sharma_Mor_Music256k.mp3',
+        albumArt: 'https://i.scdn.co/image/ab67616d0000b2739949e02da1e8b64dace9c146',
+        lyrics: ''
+    }
+];
+
+const playlists = {
+    'cyber-vibes': [songs[0], songs[1], songs[2]],
+    'neural-beats': [songs[1], songs[2], songs[0]],
+    'quantum-rock': [songs[2], songs[0], songs[1]],
+    'digital-hiphop': [songs[3], songs[2], songs[1]],
+    'badshah': [songs[7], songs[2], songs[1]],
+    'prada': [songs[8], songs[6], songs[1]],
+    'kharbuja': [songs[9], songs[8], songs[1]],
+    'baba': [songs[5], songs[2], songs[1]],
+    'rula': [songs[6], songs[2], songs[1]],
+    'digital': [songs[4], songs[3], songs[2]],
+    'ai-mix-1': [songs[0], songs[1], songs[2]],
+    'ai-mix-2': [songs[1], songs[0], songs[2]],
+    'discover-ai': [songs[2], songs[1], songs[0]]
+};
+
+let userData = {
+    likedSongs: [],
+    customPlaylists: {},
+    currentPlaylist: songs, // Initialize with default songs
+    currentSongIndex: 0,
+    playQueue: [],
+    history: []
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+    loadUserData();
+    updateUI();
+    setupEventListeners();
+    setupKeyboardShortcuts();
+    setupTouchGestures();
+    // Initialize audio with the first song to avoid autoplay issues
+    audio.src = userData.currentPlaylist[0].src;
+    audio.volume = document.getElementById('volume-slider').value / 100;
+    // Ensure background playback
+    audio.preload = 'auto'; // Preload audio to ensure continuity
+    // Handle visibility change for background playback
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+});
+
+function handleVisibilityChange() {
+    if (document.visibilityState === 'hidden' && isPlaying) {
+        // Ensure audio continues playing when page is hidden
+        audio.play().catch(err => {
+            console.error('Background playback error:', err);
+        });
+    }
+}
+
+function loadUserData() {
+    const savedData = localStorage.getItem('cyberTuneData');
+    if (savedData) {
+        userData = JSON.parse(savedData);
+        userData.currentPlaylist = userData.currentPlaylist.map(song => songs.find(s => s.id === song.id) || song);
+        playQueue = userData.playQueue.map(song => songs.find(s => s.id === song.id) || song);
+    }
+    if (!userData.currentPlaylist.length) {
+        userData.currentPlaylist = songs;
+    }
+    updateQueueUI();
+    updateUI();
+}
+
+function saveUserData() {
+    userData.playQueue = [...playQueue];
+    localStorage.setItem('cyberTuneData', JSON.stringify(userData));
+}
+
+function updateUI() {
+    const song = userData.currentPlaylist[userData.currentSongIndex] || songs[0];
+    document.getElementById('player-song-title').textContent = song.title;
+    document.getElementById('player-artist').textContent = song.artist;
+    document.getElementById('player-album-art').src = song.albumArt;
+    document.getElementById('duration').textContent = song.duration;
+    document.getElementById('player-album-art').parentElement.classList.toggle('playing', isPlaying);
+    document.getElementById('music-player').classList.toggle('hidden', !isPlayerVisible);
+
+    document.getElementById('shuffle-btn').classList.toggle('text-cyber-red', isShuffling);
+    document.getElementById('repeat-btn').querySelector('i').className = repeatMode === 2 ? 'fas fa-repeat-1 text-sm' : 'fas fa-repeat text-sm';
+    document.getElementById('repeat-btn').classList.toggle('text-cyber-red', repeatMode > 0);
+    document.getElementById('mute-btn').querySelector('i').className = isMuted ? 'fas fa-volume-mute text-sm' : 'fas fa-volume-high text-sm';
+
+    document.querySelectorAll('.like-btn').forEach(btn => {
+        const songId = btn.closest('[data-song]')?.dataset.song;
+        if (songId) {
+            btn.querySelector('i').className = userData.likedSongs.includes(songId) ? 'fas fa-heart text-cyber-purple text-base' : 'far fa-heart text-base';
+        }
+    });
+
+    // Hide the currently playing song from the "Recently Played" section
+    document.querySelectorAll('.music.recent').forEach(card => {
+        const songId = card.dataset.song;
+        if (songId === song.id && isPlayerVisible && isPlaying) {
+            card.style.display = 'none'; // Hide the card
+        } else {
+            card.style.display = 'flex'; // Show the card
+        }
+    });
+}
+
+function updateQueueUI() {
+    const queueList = document.getElementById('queue-list');
+    queueList.innerHTML = '';
+    playQueue.forEach((song, index) => {
+        const item = document.createElement('div');
+        item.className = 'flex items-center space-x-2 p-2 bg-dark-card rounded-lg hover:bg-gray-700 transition-colors';
+        item.innerHTML = `
+            <img src="${song.albumArt}" alt="${song.title}" class="w-8 h-8 rounded object-cover cyber-glow">
+            <div class="flex-1">
+                <h4 class="text-white font-semibold text-xs">${song.title}</h4>
+                <p class="text-gray-400 text-xs">${song.artist}</p>
+            </div>
+            <button class="remove-queue text-gray-400 hover:text-cyber-red" data-index="${index}">
+                <i class="fas fa-trash text-xs"></i>
+            </button>
+        `;
+        queueList.appendChild(item);
+    });
+
+    queueList.querySelectorAll('.remove-queue').forEach(btn => {
+        btn.addEventListener('click', e => {
+            const index = parseInt(e.target.closest('button').dataset.index);
+            playQueue.splice(index, 1);
+            saveUserData();
+            updateQueueUI();
+        });
+    });
+}
+
+function setupEventListeners() {
+    document.getElementById('play-pause-btn').addEventListener('click', togglePlayPause);
+    document.getElementById('prev-btn').addEventListener('click', playPrevious);
+    document.getElementById('next-btn').addEventListener('click', playNext);
+
+    document.getElementById('close-player').addEventListener('click', () => {
+        isPlayerVisible = false;
+        audio.pause();
+        isPlaying = false;
+        document.getElementById('play-pause-btn').querySelector('i').className = 'fas fa-play text-sm';
+        // Show all song cards when player is closed
+        document.querySelectorAll('.music.recent').forEach(card => {
+            card.style.display = 'flex';
+        });
+        updateUI();
+    });
+
+    document.getElementById('progress-bar').addEventListener('input', e => {
+        const progress = e.target.value / 100;
+        audio.currentTime = progress * audio.duration;
+    });
+
+    document.getElementById('volume-slider').addEventListener('input', e => {
+        const volume = e.target.value / 100;
+        isMuted = volume === 0;
+        audio.volume = volume;
+        updateUI();
+    });
+
+    document.getElementById('mute-btn').addEventListener('click', () => {
+        isMuted = !isMuted;
+        audio.volume = isMuted ? 0 : document.getElementById('volume-slider').value / 100;
+        document.getElementById('volume-slider').value = audio.volume * 100;
+        updateUI();
+    });
+
+    document.getElementById('shuffle-btn').addEventListener('click', () => {
+        isShuffling = !isShuffling;
+        updateUI();
+    });
+
+    document.getElementById('repeat-btn').addEventListener('click', () => {
+        repeatMode = (repeatMode + 1) % 3;
+        audio.loop = repeatMode === 2;
+        updateUI();
+    });
+
+    document.getElementById('lyrics-toggle').addEventListener('click', () => {
+        const lyricsContainer = document.getElementById('lyrics-container');
+        lyricsContainer.classList.toggle('hidden');
+        if (!lyricsContainer.classList.contains('hidden')) {
+            const song = userData.currentPlaylist[userData.currentSongIndex];
+            lyricsContainer.textContent = song.lyrics || 'No lyrics available.';
+        }
+    });
+
+    document.getElementById('queue-toggle').addEventListener('click', () => {
+        const sidebar = document.getElementById('queue-sidebar');
+        sidebar.classList.toggle('hidden');
+        sidebar.style.transform = sidebar.classList.contains('hidden') ? 'translateX(100%)' : 'translateX(0)';
+    });
+
+    document.getElementById('close-queue').addEventListener('click', () => {
+        const sidebar = document.getElementById('queue-sidebar');
+        sidebar.style.transform = 'translateX(100%)';
+        setTimeout(() => sidebar.classList.add('hidden'), 300);
+    });
+
+    document.getElementById('search-icon').addEventListener('click', () => {
+        const searchInput = document.getElementById('search-input');
+        searchInput.focus();
+    });
+
+    const debounce = (fn, delay) => {
+        let timeout;
+        return (...args) => {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => fn(...args), delay);
+        };
+    };
+
+    document.getElementById('search-input').addEventListener('input', debounce(e => {
+        const query = e.target.value.toLowerCase().trim();
+        const cards = document.querySelectorAll('.music-card, .music.recent');
+        cards.forEach(card => {
+            const title = card.querySelector('h3')?.textContent.toLowerCase() || '';
+            card.style.display = query === '' || title.includes(query) ? '' : 'none';
+        });
+    }, 300));
+
+    document.querySelectorAll('.music-card[data-playlist]').forEach(card => {
+        card.addEventListener('click', e => {
+            if (!e.target.closest('button')) {
+                const playlistId = card.dataset.playlist;
+                playPlaylist(playlistId);
+            }
+        });
+    });
+
+    document.querySelectorAll('.music.recent[data-song]').forEach(card => {
+        card.addEventListener('click', e => {
+            if (!e.target.closest('button')) {
+                const songId = card.dataset.song;
+                userData.currentPlaylist = songs.filter(s => s.id === songId);
+                userData.currentSongIndex = 0;
+                playSong(0);
+            }
+        });
+    });
+
+    document.querySelectorAll('.like-btn').forEach(btn => {
+        btn.addEventListener('click', e => {
+            e.stopPropagation();
+            const songId = btn.closest('[data-song]')?.dataset.song;
+            if (songId) toggleLike(songId);
+        });
+    });
+
+    document.querySelectorAll('.add-btn').forEach(btn => {
+        btn.addEventListener('click', e => {
+            e.stopPropagation();
+            const songId = btn.closest('[data-song]')?.dataset.song;
+            if (songId) addToPlaylist(songId);
+        });
+    });
+
+    document.querySelectorAll('.queue-btn').forEach(btn => {
+        btn.addEventListener('click', e => {
+            e.stopPropagation();
+            const songId = btn.closest('[data-song]')?.dataset.song;
+            if (songId) addToQueue(songId);
+        });
+    });
+
+    audio.addEventListener('timeupdate', () => {
+        if (!isNaN(audio.duration)) {
+            const progress = (audio.currentTime / audio.duration) * 100 || 0;
+            document.getElementById('progress-bar').value = progress;
+            document.getElementById('current-time').textContent = formatTime(audio.currentTime);
+        }
+    });
+
+    audio.addEventListener('ended', handleSongEnd);
+
+    audio.addEventListener('error', e => {
+        console.error('Audio error:', e);
+        alert('Failed to load the audio file. Please try another song.');
+        playNext();
+    });
+
+    audio.addEventListener('canplay', () => {
+        document.getElementById('duration').textContent = formatTime(audio.duration);
+    });
+}
+
+function setupKeyboardShortcuts() {
+    document.addEventListener('keydown', e => {
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+        if (e.code === 'Space') {
+            e.preventDefault();
+            togglePlayPause();
+        } else if (e.code === 'ArrowRight') {
+            audio.currentTime = Math.min(audio.currentTime + 10, audio.duration);
+        } else if (e.code === 'ArrowLeft') {
+            audio.currentTime = Math.max(audio.currentTime - 10, 0);
+        } else if (e.code === 'ArrowUp') {
+            audio.volume = Math.min(1, audio.volume + 0.1);
+            document.getElementById('volume-slider').value = audio.volume * 100;
+            isMuted = audio.volume === 0;
+            updateUI();
+        } else if (e.code === 'ArrowDown') {
+            audio.volume = Math.max(0, audio.volume - 0.1);
+            document.getElementById('volume-slider').value = audio.volume * 100;
+            isMuted = audio.volume === 0;
+            updateUI();
+        }
+    });
+}
+
+function setupTouchGestures() {
+    let touchStartX = 0;
+    let touchEndX = 0;
+    const player = document.getElementById('music-player');
+    player.addEventListener('touchstart', e => {
+        touchStartX = e.changedTouches[0].screenX;
+    });
+    player.addEventListener('touchend', e => {
+        touchEndX = e.changedTouches[0].screenX;
+        if (touchEndX - touchStartX > 50) playPrevious();
+        if (touchStartX - touchEndX > 50) playNext();
+    });
+}
+
+function togglePlayPause() {
+    if (!userData.currentPlaylist.length) {
+        alert('No songs available to play.');
+        return;
+    }
+    if (isPlaying) {
+        audio.pause();
+    } else {
+        isPlayerVisible = true;
+        audio.play().catch(err => {
+            console.error('Playback error:', err);
+            alert('Playback failed. Ensure the audio file is accessible and try again.');
+        });
+    }
+    isPlaying = !isPlaying;
+    document.getElementById('play-pause-btn').querySelector('i').className = isPlaying ? 'fas fa-pause text-sm' : 'fas fa-play text-sm';
+    updateUI();
+}
+
+function playSong(index) {
+    if (!userData.currentPlaylist.length) {
+        alert('No songs available to play.');
+        return;
+    }
+    userData.currentSongIndex = index % userData.currentPlaylist.length;
+    const song = userData.currentPlaylist[userData.currentSongIndex];
+    audio.src = song.src;
+    audio.load(); // Ensure the audio is reloaded
+    isPlayerVisible = true;
+    if (isPlaying) {
+        audio.play().catch(err => {
+            console.error('Playback error:', err);
+            alert('Failed to play the song. Trying next song...');
+            playNext();
+        });
+    }
+    saveUserData();
+    updateUI();
+    userData.history.unshift(song.id);
+    if (userData.history.length > 50) userData.history.pop();
+    saveUserData();
+}
+
+function playPlaylist(playlistId) {
+    userData.currentPlaylist = playlists[playlistId] || songs;
+    userData.currentSongIndex = 0;
+    isPlayerVisible = true;
+    playSong(0);
+}
+
+function playPrevious() {
+    let newIndex = userData.currentSongIndex - 1;
+    if (newIndex < 0) {
+        newIndex = repeatMode === 1 ? userData.currentPlaylist.length - 1 : 0;
+    }
+    if (isShuffling) {
+        newIndex = Math.floor(Math.random() * userData.currentPlaylist.length);
+    }
+    playSong(newIndex);
+}
+
+function playNext() {
+    let newIndex = userData.currentSongIndex + 1;
+    if (newIndex >= userData.currentPlaylist.length) {
+        if (repeatMode === 1) {
+            newIndex = 0;
+        } else if (playQueue.length > 0) {
+            const nextSong = playQueue.shift();
+            userData.currentPlaylist = [nextSong];
+            newIndex = 0;
+            updateQueueUI();
+        } else {
+            newIndex = userData.currentPlaylist.length - 1;
+            audio.pause();
+            isPlaying = false;
+            updateUI();
+            return;
+        }
+    }
+    if (isShuffling) {
+        newIndex = Math.floor(Math.random() * userData.currentPlaylist.length);
+    }
+    playSong(newIndex);
+}
+
+function handleSongEnd() {
+    if (repeatMode === 2) {
+        audio.currentTime = 0;
+        audio.play().catch(err => console.error('Playback error:', err));
+    } else {
+        playNext();
+    }
+}
+
+function toggleLike(songId) {
+    const index = userData.likedSongs.indexOf(songId);
+    if (index === -1) {
+        userData.likedSongs.push(songId);
+    } else {
+        userData.likedSongs.splice(index, 1);
+    }
+    saveUserData();
+    updateUI();
+}
+
+function addToPlaylist(songId) {
+    const modal = document.getElementById('modal');
+    modal.classList.remove('hidden');
+    const newPlaylistInput = document.getElementById('new-playlist-name');
+    document.getElementById('modal-save').onclick = () => {
+        const playlistId = document.getElementById('playlist-select').value;
+        const newName = newPlaylistInput.value.trim();
+        const song = songs.find(s => s.id === songId);
+        if (!song) {
+            alert('Song not found.');
+            return;
+        }
+        if (newName) {
+            const newId = newName.toLowerCase().replace(/\s+/g, '-');
+            if (!userData.customPlaylists[newId]) {
+                userData.customPlaylists[newId] = [];
+                const select = document.getElementById('playlist-select');
+                const option = document.createElement('option');
+                option.value = newId;
+                option.textContent = newName;
+                select.appendChild(option);
+            }
+            if (!userData.customPlaylists[newId].some(s => s.id === songId)) {
+                userData.customPlaylists[newId].push(song);
+                alert(`Added "${song.title}" to new playlist "${newName}"`);
+            } else {
+                alert(`"${song.title}" is already in "${newName}"`);
+            }
+        } else {
+            if (!playlists[playlistId].some(s => s.id === songId)) {
+                playlists[playlistId].push(song);
+                alert(`Added "${song.title}" to "${playlistId.replace('-', ' ')}"`);
+            } else {
+                alert(`"${song.title}" is already in "${playlistId.replace('-', ' ')}"`);
+            }
+        }
+        newPlaylistInput.value = '';
+        modal.classList.add('hidden');
+        saveUserData();
+    };
+    document.getElementById('modal-cancel').onclick = () => {
+        modal.classList.add('hidden');
+        newPlaylistInput.value = '';
+    };
+}
+
+function addToQueue(songId) {
+    const song = songs.find(s => s.id === songId);
+    if (song && !playQueue.some(q => q.id === songId)) {
+        playQueue.push(song);
+        saveUserData();
+        updateQueueUI();
+        alert(`Added "${song.title}" to queue`);
+    } else {
+        alert(`"${song?.title || 'Song'}" is already in the queue or not found`);
+    }
+}
+
+function formatTime(seconds) {
+    if (isNaN(seconds)) return '0:00';
+    const min = Math.floor(seconds / 60);
+    const sec = Math.floor(seconds % 60);
+    return `${min}:${sec < 10 ? '0' : ''}${sec}`;
+}
+    </script>
+</body>
+
+</html>
